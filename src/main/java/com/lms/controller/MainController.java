@@ -1,51 +1,68 @@
 package com.lms.controller;
 
-import java.util.Collection;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import com.lms.model.Book;
 import com.lms.service.LmsService;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 public class MainController {
+
     @Autowired
     private LmsService lmsService;
 
-    // Show all books in the JSP
-    @GetMapping("/")
-    public String showBooks(Model model) {
-        Collection<Book> books = lmsService.findAllBooks();
-        model.addAttribute("books", books);
-        return "index";  // This maps to index.jsp
-    }
+    // ✅ REMOVED showBooks() method to avoid duplicate mapping
 
-    // Save Book (Add or Update)
+    // Save a book (Add or Update)
     @PostMapping("/saveBook")
-    public String saveBook(
-            @RequestParam String book_name, 
-            @RequestParam String author, 
-            @RequestParam String purchase_date) {
-        
+    public String saveBook(@RequestParam String book_name, 
+                           @RequestParam String author, 
+                           @RequestParam String purchase_date, 
+                           HttpSession session) {
+
+        if (!"ADMIN".equals(session.getAttribute("role"))) {
+            return "redirect:/books"; // Restrict non-admins
+        }
+
         Book book = new Book();
         book.setBook_name(book_name);
         book.setAuthor(author);
         book.setPurchase_date(java.sql.Date.valueOf(purchase_date));
 
         lmsService.saveBook(book);
-        return "redirect:/";
+        return "redirect:/books";
     }
 
-    // Delete a book
+    // Delete a book (Admin only)
     @GetMapping("/delete/{id}")
-    public String deleteBook(@PathVariable long id) {
+    public String deleteBook(@PathVariable long id, HttpSession session) {
+        if (!"ADMIN".equals(session.getAttribute("role"))) {
+            return "redirect:/books"; // Restrict non-admins
+        }
+
         lmsService.deleteBook(id);
-        return "redirect:/";
+        return "redirect:/books";
     }
+
+    // Redirect to the appropriate dashboard
+    @GetMapping("/dashboard")
+    public String dashboard(HttpSession session) {
+        String role = (String) session.getAttribute("role");
+
+        if ("ADMIN".equals(role)) {
+            return "redirect:/admin-dashboard";
+        } else {
+            return "redirect:/user-dashboard";
+        }
+    }
+
+
+
 }
