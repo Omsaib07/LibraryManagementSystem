@@ -1,5 +1,7 @@
 package com.lms.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +23,8 @@ public class LoanController {
 
     @GetMapping
     public String showLoans(Model model) {
-        model.addAttribute("loans", loanService.getAllLoans());
+        List<Loan> loans = loanService.getAllLoans();
+        model.addAttribute("loans", loans);
         return "loans";
     }
 

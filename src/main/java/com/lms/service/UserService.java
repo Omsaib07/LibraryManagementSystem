@@ -20,6 +20,12 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    // Retrieve a user by ID
+    public User getUserById(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        return user.orElse(null);
+    }
+
     // Save or update a user
     public void saveUser(User user) {
         userRepository.save(user);
@@ -31,8 +37,8 @@ public class UserService {
     }
 
     // Validate user credentials
-    public User validateUser(String username, String password) {
-        Optional<User> user = userRepository.findByUsernameAndPassword(username, password);
+    public User validateUser(String email, String password) {
+        Optional<User> user = userRepository.findByEmailAndPassword(email, password);
         return user.orElse(null);  // Return user if found, otherwise return null
     }
 }

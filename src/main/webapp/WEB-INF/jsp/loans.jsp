@@ -68,6 +68,7 @@
                         <th>Book Name</th>
                         <th>Borrow Date</th>
                         <th>Return Date</th>
+                        <th>Category ID</th>  <!-- Added Category ID Column -->
                     </tr>
                 </thead>
                 <tbody>
@@ -77,6 +78,7 @@
                             <td>${loan.book.book_name}</td>
                             <td>${loan.borrowDate}</td>
                             <td>${loan.returnDate}</td>
+                            <td>${loan.categoryId}</td>  <!-- Display Category ID -->
                         </tr>
                     </c:forEach>
                 </tbody>

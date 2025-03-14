@@ -5,11 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import com.lms.model.User;
 import com.lms.service.UserService;
@@ -29,9 +25,32 @@ public class UserController {
         return "users";  // Render users.jsp
     }
 
+    // Show the user creation form
+    @GetMapping("/new")
+    public String showUserForm(Model model) {
+        model.addAttribute("user", new User());
+        return "user_form";  // Renders user_form.jsp
+    }
+
     // Save a user
     @PostMapping("/save")
     public String saveUser(@ModelAttribute User user) {
+        userService.saveUser(user);
+        return "redirect:/users";
+    }
+
+    // Show edit form
+    @GetMapping("/edit/{id}")
+    public String showEditForm(@PathVariable Long id, Model model) {
+        User user = userService.getUserById(id);
+        model.addAttribute("user", user);
+        return "user_form";  // Reuse user_form.jsp for editing
+    }
+
+    // Update user
+    @PostMapping("/update/{id}")
+    public String updateUser(@PathVariable Long id, @ModelAttribute User user) {
+        user.setId(id);
         userService.saveUser(user);
         return "redirect:/users";
     }
