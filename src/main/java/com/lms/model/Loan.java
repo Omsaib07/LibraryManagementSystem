@@ -41,4 +41,8 @@ public class Loan {
     @Column(name = "return_date")
     @Temporal(TemporalType.DATE)
     private Date returnDate;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
 }
