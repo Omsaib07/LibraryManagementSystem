@@ -7,8 +7,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import com.lms.model.Loan;
 import com.lms.model.User;
+import com.lms.service.LoanService;
 import com.lms.service.UserService;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/users")
@@ -31,7 +35,30 @@ public class UserController {
         model.addAttribute("user", new User());
         return "user_form";  // Renders user_form.jsp
     }
+    // Show logged-in user's profile
+@GetMapping("/profile")
+public String showProfile(Model model, HttpSession session) {
+    User user = (User) session.getAttribute("loggedInUser");
+    if (user == null) {
+        return "redirect:/auth/"; // Redirect to login if not logged in
+    }
+    model.addAttribute("user", user);
+    return "my-profile"; // This should match my-profile.jsp
+}
+@Autowired
+private LoanService loanService; // Add this line
+// Show logged-in user's loans
+@GetMapping("/my-loans")
+public String showUserLoans(Model model, HttpSession session) {
+    User user = (User) session.getAttribute("loggedInUser");
+    if (user == null) {
+        return "redirect:/auth/"; // Redirect to login if not logged in
+    }
 
+    List<Loan> loans = loanService.getLoansByUserId(user.getId());
+    model.addAttribute("loans", loans);
+    return "my-loans"; // This should match my-loans.jsp
+}
     // Save a user
     @PostMapping("/save")
     public String saveUser(@ModelAttribute User user) {

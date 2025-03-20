@@ -5,29 +5,27 @@
 <head>
     <title>Manage Categories - Library Management System</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <style>
-        .card-link {
-            text-decoration: none;
-            color: inherit;
-            transition: transform 0.2s;
-        }
-        .card-link:hover .card {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-        .card {
-            transition: all 0.3s;
-        }
-        .nav-link.active {
-            font-weight: bold;
-        }
-    </style>
+
+    <script>
+        // Display alert messages if available
+        window.onload = function() {
+            var errorMessage = "${errorMessage}";
+            var successMessage = "${successMessage}";
+            if (errorMessage) {
+                alert(errorMessage);
+            }
+            if (successMessage) {
+                alert(successMessage);
+            }
+        };
+    </script>
 </head>
 <body class="container py-4">
     <header class="mb-4">
-
+        <h1 class="text-center">Book Categories</h1>
         <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
             <div class="container-fluid">
+                <a class="navbar-brand" href="/">LMS</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -37,9 +35,6 @@
                             <a class="nav-link" href="/">Home</a>
                         </li>
                         <c:if test="${sessionScope.loggedInUser != null}">
-                            <li class="nav-item">
-                                <a class="nav-link" href="/books">Books</a>
-                            </li>
                             <c:if test="${sessionScope.role == 'ADMIN'}">
                                 <li class="nav-item">
                                     <a class="nav-link" href="/users">Users</a>
@@ -73,7 +68,6 @@
     </header>
 
     <main>
-        <!-- Add Category Form -->
         <div class="card mb-4">
             <div class="card-body">
                 <h5 class="card-title">Add New Category</h5>
@@ -88,7 +82,6 @@
             </div>
         </div>
 
-        <!-- Category List -->
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">Existing Categories</h5>
@@ -97,7 +90,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Category Name</th>
-                            <th>Actions</th>
+                            
                         </tr>
                     </thead>
                     <tbody>
@@ -105,26 +98,13 @@
                             <tr>
                                 <td>${category.id}</td>
                                 <td>${category.categoryName}</td>
-                                <td>
-                                    <a href="/categories/delete/${category.id}" class="btn btn-danger btn-sm"
-                                       onclick="return confirm('Are you sure you want to delete this category?');">Delete</a>
-                                </td>
+                             
                             </tr>
                         </c:forEach>
                     </tbody>
                 </table>
-                <c:if test="${empty categories}">
-                    <p class="text-center text-muted">No categories found.</p>
-                </c:if>
             </div>
         </div>
     </main>
-
-    <footer class="mt-5 pt-5 text-center text-muted">
-        <p>&copy; 2025 Library Management System</p>
-    </footer>
-
-    <!-- Bootstrap JS Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

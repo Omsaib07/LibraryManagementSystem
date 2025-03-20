@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
 <body class="container py-4">
+    <h1 class="mb-4">Library Books</h1>
     <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
         <div class="container-fluid">
             <a class="navbar-brand" href="/">LMS</a>
@@ -15,9 +16,6 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/">Home</a>
-                    </li>
                     <li class="nav-item">
                         <a class="nav-link active" href="/books">Books</a>
                     </li>
@@ -37,14 +35,14 @@
                     </c:if>
                 </ul>
                 <div class="d-flex">
-                    <a href="/dashboard" class="btn btn-outline-primary me-2">Dashboard</a>
+                    <a href="/admin-dashboard" class="btn btn-outline-primary me-2">Dashboard</a>
                     <a href="/auth/logout" class="btn btn-danger">Logout</a>
                 </div>
             </div>
         </div>
     </nav>
 
-    <h2 class="mb-4">Library Books</h2>
+    
     
     <c:if test="${sessionScope.role == 'ADMIN'}">
         <div class="card mb-4">
@@ -64,6 +62,10 @@
                     <div class="col-md-4">
                         <label class="form-label">Purchase Date</label>
                         <input type="date" name="purchase_date" class="form-control" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Category</label>
+                        <input type="text" name="category" class="form-control" required>
                     </div>
                     <div class="col-12 mt-3">
                         <button type="submit" class="btn btn-success">Save Book</button>
@@ -100,8 +102,7 @@
                                 <td>${book.purchase_date}</td>
                                 <c:if test="${sessionScope.role == 'ADMIN'}">
                                     <td>
-                                        <a href="/delete/${book.id}" class="btn btn-sm btn-danger" 
-                                           onclick="return confirm('Are you sure you want to delete this book?')">Delete</a>
+                                           <a href="/deleteBook?id=${book.id}"class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this book?')">Delete</a>
                                     </td>
                                 </c:if>
                             </tr>

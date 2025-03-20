@@ -34,7 +34,7 @@ public class LoginController {
         User user = loginService.authenticate(username, password);
         if (user == null) {
             model.addAttribute("error", "Invalid username or password!");
-            return "login";
+            return "redirect:/auth/";
         }
 
         session.setAttribute("loggedInUser", user);
@@ -48,6 +48,6 @@ public class LoginController {
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate(); // Clear session
-        return "redirect:/auth/login";
+        return "redirect:/auth/";
     }
 }

@@ -7,17 +7,16 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
 <body class="container py-4">
+    <h1 class="text-center">Library Fines</h1>
     <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
         <div class="container-fluid">
+            
             <a class="navbar-brand" href="/">LMS</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/">Home</a>
-                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/books">Books</a>
                     </li>
@@ -44,7 +43,7 @@
         </div>
     </nav>
 
-    <h2 class="mb-4">Library Fines</h2>
+    
     
     <div class="row">
         <div class="col-md-4 mb-4">
