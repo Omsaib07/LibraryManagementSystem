@@ -63,8 +63,8 @@
         <!-- Login Form -->
         <form action="login" method="post">
             <div class="mb-3">
-                <label class="form-label">Email</label>
-                <input type="email" name="email" class="form-control" placeholder="Enter your email" required>
+                <label class="form-label">Username</label>
+                <input type="text" name="username" class="form-control" placeholder="Enter your Username" required>
             </div>
             <div class="mb-3">
                 <label class="form-label">Password</label>
@@ -75,7 +75,6 @@
 
         <!-- Additional Links -->
         <div class="text-center mt-3">
-            <p class="text-muted">Don't have an account? <a href="register.jsp" class="text-primary">Sign up</a></p>
             <p><a href="#" class="text-danger">Forgot Password?</a></p>
         </div>
     </div>
