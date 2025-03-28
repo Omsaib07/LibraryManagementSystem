@@ -42,7 +42,7 @@
                     <div class="d-flex">
                         <c:choose>
                             <c:when test="${sessionScope.loggedInUser != null}">
-                                <a href="/dashboard" class="btn btn-outline-primary me-2">Dashboard</a>
+                                <a href="/admin-dashboard" class="btn btn-outline-primary me-2">Dashboard</a>
                                 <a href="/auth/logout" class="btn btn-danger">Logout</a>
                             </c:when>
                             <c:otherwise>
