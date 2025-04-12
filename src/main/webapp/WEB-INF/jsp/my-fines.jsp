@@ -22,8 +22,8 @@
             <c:forEach var="fine" items="${fines}">
                 <tr>
                     <td><c:out value="${fine.id}" /></td>
-                    <td><c:out value="${fine.bookTitle}" /></td>
-                    <td>₹<c:out value="${fine.amount}" /></td>
+                    <td><c:out value="${fine.loan.book.book_name}" /></td>
+                    <td>₹<c:out value="${fine.fineAmount}" /></td>
                     <td>
                         <a href="/user/fines/pay/${fine.id}" class="btn btn-success btn-sm">Pay Fine</a>
                     </td>

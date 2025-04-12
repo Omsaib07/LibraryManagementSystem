@@ -39,6 +39,7 @@ public class LoginController {
 
         session.setAttribute("loggedInUser", user);
         session.setAttribute("role", user.getRole().toString());
+        session.setAttribute("loggedInUserId", user.getId());
 
         return user.getRole().toString().equalsIgnoreCase("ADMIN") 
                ? "redirect:/admin-dashboard" 
