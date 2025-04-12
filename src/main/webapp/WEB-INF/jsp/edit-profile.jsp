@@ -71,7 +71,7 @@
                         <label for="role" class="form-label">Role</label>
                         <select id="role" name="role" class="form-control" required>
                             <option value="USER" ${sessionScope.loggedInUser.role == 'USER' ? 'selected' : ''}>User</option>
-                            <option value="ADMIN" ${sessionScope.loggedInUser.role == 'ADMIN' ? 'selected' : ''}>Admin</option>
+                            
                         </select>
                     </div>
 

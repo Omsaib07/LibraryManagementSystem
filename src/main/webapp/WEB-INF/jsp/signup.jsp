@@ -58,7 +58,7 @@
         </form>
 
         <div class="text-center mt-3">
-            <p>Already have an account? <a href="/login" class="text-primary">Login here</a></p>
+            <p>Already have an account? <a href="/auth/logout" class="text-primary">Login here</a></p>
         </div>
     </div>
 </body>

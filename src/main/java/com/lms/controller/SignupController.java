@@ -1,13 +1,14 @@
 package com.lms.controller;
 
-import com.lms.model.User;
-import com.lms.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.lms.model.User;
+import com.lms.service.UserService;
 
 @Controller
 public class SignupController {
@@ -46,6 +47,6 @@ public class SignupController {
 
         userService.saveUser(newUser);
 
-        return "redirect:/login";  // Redirect to login page after successful signup
+        return "redirect:/auth/";  // Redirect to login page after successful signup
     }
 }

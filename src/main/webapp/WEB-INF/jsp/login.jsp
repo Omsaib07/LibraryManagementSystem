@@ -75,9 +75,7 @@
         
 
         <!-- Additional Links -->
-        <div class="text-center mt-3">
-            <p><a href="#" class="text-danger">Forgot Password?</a></p>
-        </div>
+       
         <!-- signup_page -->
     <div class="text-center mt-3">
         <p><a href="<c:url value='/signup' />" class="text-primary">Create an Account</a></p>
