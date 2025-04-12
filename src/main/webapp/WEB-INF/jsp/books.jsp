@@ -32,6 +32,12 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/categories">Categories</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/events">Events</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/registration_list">Registrations</a>
+                        </li>
                     </c:if>
                 </ul>
                 <div class="d-flex">

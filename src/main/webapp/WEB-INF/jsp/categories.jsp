@@ -32,7 +32,7 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="/">Home</a>
+                            <a class="nav-link" href="/books">Books</a>
                         </li>
                         <c:if test="${sessionScope.loggedInUser != null}">
                             <c:if test="${sessionScope.role == 'ADMIN'}">
@@ -47,6 +47,12 @@
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link active" href="/categories">Categories</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/events">Events</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/registration_list">Registrations</a>
                                 </li>
                             </c:if>
                         </c:if>
