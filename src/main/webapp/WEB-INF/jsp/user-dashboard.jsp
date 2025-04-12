@@ -89,8 +89,7 @@
                 </a>
             </div>
 
-            <!-- Fines (Only visible if user has fines) -->
-            <c:if test="${sessionScope.hasFines}">
+            <!-- Fines -->
             <div class="col">
                 <a href="/my-fines" class="card-link">
                     <div class="card h-100">
