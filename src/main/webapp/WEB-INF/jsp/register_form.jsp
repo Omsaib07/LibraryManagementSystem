@@ -42,7 +42,12 @@
         <button type="submit" class="btn btn-success">Register</button>
         <a href="/events" class="btn btn-secondary">Back to Events</a>
     </form>
+    <footer class="mt-5 pt-5 text-center text-muted">
+        <p>&copy; 2025 Library Management System</p>
+    </footer>
 
+    <!-- Bootstrap JS -->
+    
     <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

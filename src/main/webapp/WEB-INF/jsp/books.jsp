@@ -5,51 +5,18 @@
 <head>
     <title>Library Books</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body class="container py-4">
-    <h1 class="mb-4">Library Books</h1>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/">LMS</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/books">Books</a>
-                    </li>
-                    <c:if test="${sessionScope.role == 'ADMIN'}">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/users">Users</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/loans">Loans</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/fines">Fines</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/categories">Categories</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/events">Events</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/registration_list">Registrations</a>
-                        </li>
-                    </c:if>
-                </ul>
-                <div class="d-flex">
-                    <a href="/admin-dashboard" class="btn btn-outline-primary me-2">Dashboard</a>
-                    <a href="/auth/logout" class="btn btn-danger">Logout</a>
-                </div>
-            </div>
+    <header class="mb-4 text-center">
+        <h2>Library Books</h2>
+    </header>
+    <c:if test="${sessionScope.role == 'ADMIN'}">
+        <div class="alert alert-info text-center">
+            You are logged in as an Admin. You can add or delete books.
         </div>
-    </nav>
-
-    
-    
+    </c:if>
+    <jsp:include page="admin_navbar.jsp" />
     <c:if test="${sessionScope.role == 'ADMIN'}">
         <div class="card mb-4">
             <div class="card-header bg-primary text-white">
@@ -90,7 +57,7 @@
                 <table class="table table-striped table-hover">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            
                             <th>Book Name</th>
                             <th>Author</th>
                             <th>Purchase Date</th>
@@ -102,7 +69,7 @@
                     <tbody>
                         <c:forEach var="book" items="${books}">
                             <tr>
-                                <td>${book.id}</td>
+                                
                                 <td>${book.book_name}</td>
                                 <td>${book.author}</td>
                                 <td>${book.purchase_date}</td>
@@ -118,7 +85,12 @@
             </div>
         </div>
     </div>
-    
+    <footer class="mt-5 pt-5 text-center text-muted">
+        <p>&copy; 2025 Library Management System</p>
+    </footer>
+
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

@@ -11,54 +11,7 @@
     <!-- Header -->
     <header class="mb-4">
         <h1 class="text-center">Library Loans</h1>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="/">LMS</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav me-auto">
-                        <c:if test="${sessionScope.loggedInUser != null}">
-                            <li class="nav-item">
-                                <a class="nav-link" href="/books">Books</a>
-                            </li>
-                            <c:if test="${sessionScope.role == 'ADMIN'}">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/users">Users</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link active" href="/loans">Loans</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/fines">Fines</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/categories">Categories</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/events">Events</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/registration_list">Registrations</a>
-                                </li>
-                            </c:if>
-                        </c:if>
-                    </ul>
-                    <div class="d-flex">
-                        <c:choose>
-                            <c:when test="${sessionScope.loggedInUser != null}">
-                                <a href="/admin-dashboard" class="btn btn-outline-primary me-2">Dashboard</a>
-                                <a href="/auth/logout" class="btn btn-danger">Logout</a>
-                            </c:when>
-                            <c:otherwise>
-                                <a href="/auth/" class="btn btn-primary">Login</a>
-                            </c:otherwise>
-                        </c:choose>
-                    </div>
-                </div>
-            </div>
-        </nav>
+        <jsp:include page="admin_navbar.jsp" />
     </header>
 
     <!-- Loans Table -->
