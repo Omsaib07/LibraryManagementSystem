@@ -22,13 +22,14 @@ public class UserService {
 
     // Retrieve a user by ID
     public User getUserById(Long id) {
-        Optional<User> user = userRepository.findById(id);
-        return user.orElse(null);
+        return userRepository.findById(id).orElse(null);
     }
 
     // Save or update a user
     public void saveUser(User user) {
-        userRepository.save(user);
+        if (user != null) {
+            userRepository.save(user);
+        }
     }
 
     // Delete a user by ID
@@ -38,7 +39,6 @@ public class UserService {
 
     // Validate user credentials
     public User validateUser(String email, String password) {
-        Optional<User> user = userRepository.findByEmailAndPassword(email, password);
-        return user.orElse(null);  // Return user if found, otherwise return null
+        return userRepository.findByEmailAndPassword(email, password).orElse(null);
     }
 }

@@ -21,7 +21,10 @@ public class LoginController {
     private LoginService loginService;
 
     @GetMapping("/")
-    public String showLoginPage() {
+    public String showLoginPage(@RequestParam(value = "error", required = false) String error, Model model) {
+        if (error != null) {
+            model.addAttribute("error", "Invalid username or password!");
+        }
         return "login"; // Renders login.jsp
     }
 
@@ -33,12 +36,15 @@ public class LoginController {
 
         User user = loginService.authenticate(username, password);
         if (user == null) {
-            model.addAttribute("error", "Invalid username or password!");
-            return "redirect:/auth/";
+            return "redirect:/auth/?error=true"; // Redirect with error message
         }
 
         session.setAttribute("loggedInUser", user);
         session.setAttribute("role", user.getRole().toString());
+
+        // Debugging logs (check server logs)
+        System.out.println("User logged in: " + user.getUsername());
+        System.out.println("Role stored in session: " + session.getAttribute("role"));
 
         return user.getRole().toString().equalsIgnoreCase("ADMIN") 
                ? "redirect:/admin-dashboard" 
