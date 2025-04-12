@@ -73,6 +73,56 @@
             
             <c:if test="${sessionScope.loggedInUser != null}">
                 <!-- Show these when logged in -->
+                 <!-- Events (Visible to All Logged-In Users) -->
+<div class="col">
+    <a href="/events" class="card-link">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <h5 class="card-title">Events</h5>
+                <p class="card-text">Explore library events and programs</p>
+                <div class="d-grid">
+                    <button class="btn btn-outline-primary">View Events</button>
+                </div>
+            </div>
+        </div>
+    </a>
+</div>
+
+<!-- Admin-only: Manage Events -->
+<c:if test="${sessionScope.role == 'ADMIN'}">
+    <div class="col">
+        <a href="/events/new" class="card-link">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Create Event</h5>
+                    <p class="card-text">Host new library events</p>
+                    <div class="d-grid">
+                        <button class="btn btn-outline-primary">Create Event</button>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+    <c:if test="${sessionScope.role == 'ADMIN'}">
+        <!-- Other admin cards -->
+    
+        <div class="col">
+            <a href="/registration_list" class="card-link">
+                
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Registrations</h5>
+                        <p class="card-text">View registered users or event sign-ups</p>
+                        <div class="d-grid">
+                            <button class="btn btn-outline-primary">View Registrations</button>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </c:if>
+    
+</c:if>
                 <div class="col">
                     <a href="/books" class="card-link">
                         <div class="card h-100">

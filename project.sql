@@ -116,3 +116,28 @@ END;
 //
 
 DELIMITER ;
+
+CREATE TABLE events (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    date_time DATETIME NOT NULL,
+    capacity INT NOT NULL,
+    location VARCHAR(255),
+    category VARCHAR(100)
+);
+
+CREATE TABLE registrations (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    patron_name VARCHAR(255) NOT NULL,
+    patron_email VARCHAR(255) NOT NULL,
+    event_id BIGINT,
+    attended BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE
+);
+
+ALTER TABLE registrations
+DROP FOREIGN KEY FK6akauhvfwgy751ff3mk30fk8h;
+
+ALTER TABLE registrations
+ADD CONSTRAINT fk_event_id FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE;

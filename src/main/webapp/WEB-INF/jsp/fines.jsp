@@ -33,6 +33,12 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/categories">Categories</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/events">Events</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/registration_list">Registrations</a>
+                        </li>
                     </c:if>
                 </ul>
                 <div class="d-flex">
@@ -46,45 +52,6 @@
     
     
     <div class="row">
-        <div class="col-md-4 mb-4">
-            <div class="card">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0">Add New Fine</h5>
-                </div>
-                <div class="card-body">
-                    <form action="/fines/save" method="post">
-                        <div class="mb-3">
-                            <label class="form-label">Loan ID</label>
-                            <select name="loanId" class="form-select" required>
-                                <option value="">Select Loan</option>
-                                <c:forEach var="loan" items="${allLoans}">
-                                    <option value="${loan.id}">Loan ID: ${loan.id} - User: ${loan.user.name} - Book: ${loan.book.book_name}</option>
-                                </c:forEach>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Fine Amount</label>
-                            <div class="input-group">
-                                <span class="input-group-text">$</span>
-                                <input type="number" name="fineAmount" step="0.01" min="0" class="form-control" required>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Reason</label>
-                            <select name="reason" class="form-select" required>
-                                <option value="">Select Reason</option>
-                                <option value="Late Return">Late Return</option>
-                                <option value="Damaged Book">Damaged Book</option>
-                                <option value="Lost Book">Lost Book</option>
-                                <option value="Other">Other</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-success">Save Fine</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-        
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header bg-light">
