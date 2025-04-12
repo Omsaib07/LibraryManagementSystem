@@ -11,60 +11,31 @@
     <!-- Header -->
     <header class="mb-4">
         <h1 class="text-center">Library Users</h1>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="/">LMS</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav me-auto">
-                        <c:if test="${sessionScope.loggedInUser != null}">
-                            <li class="nav-item">
-                                <a class="nav-link" href="/books">Books</a>
-                            </li>
-                            <c:if test="${sessionScope.role == 'ADMIN'}">
-                                <li class="nav-item">
-                                    <a class="nav-link active" href="/users">Users</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/loans">Loans</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/fines">Fines</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/categories">Categories</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/events">Events</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/registration_list">Registrations</a>
-                                </li>
-                            </c:if>
-                        </c:if>
-                    </ul>
-                    <div class="d-flex">
-                        <c:choose>
-                            <c:when test="${sessionScope.loggedInUser != null}">
-                                <a href="/admin-dashboard" class="btn btn-outline-primary me-2">Dashboard</a>
-                                <a href="/auth/logout" class="btn btn-danger">Logout</a>
-                            </c:when>
-                            <c:otherwise>
-                                <a href="/auth/" class="btn btn-primary">Login</a>
-                            </c:otherwise>
-                        </c:choose>
-                    </div>
-                </div>
-            </div>
-        </nav>
+        <jsp:include page="admin_navbar.jsp" />
     </header>
+    
+    <!-- Success Message -->
+    <c:if test="${not empty success}">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            ${success}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </c:if>
+
+    <!-- Error Message -->
+    <c:if test="${not empty error}">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            ${error}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </c:if>
 
     <!-- Users Table -->
     <div class="card">
         <div class="card-body">
             <h5 class="card-title">Library Users</h5>
+            <a href="/users/new" class="btn btn-success mb-3">Add New User</a>
+            
             <table class="table table-bordered table-hover">
                 <thead class="table-light">
                     <tr>
@@ -73,6 +44,7 @@
                         <th>Email</th>
                         <th>Phone</th>
                         <th>Role</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -83,10 +55,19 @@
                             <td>${user.email}</td>
                             <td>${user.phone}</td>
                             <td>${user.role}</td>
+                            <td>
+                                <a href="/users/edit/${user.id}" class="btn btn-sm btn-warning">Edit</a>
+                                <a href="/users/delete/${user.id}" 
+                                   class="btn btn-sm btn-danger" 
+                                   onclick="return confirm('Are you sure you want to delete this user?');">
+                                   Delete
+                                </a>
+                            </td>
                         </tr>
                     </c:forEach>
                 </tbody>
             </table>
+
             <c:if test="${empty users}">
                 <p class="text-center text-muted">No users found.</p>
             </c:if>
@@ -100,6 +81,6 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+    
 </body>
 </html>
