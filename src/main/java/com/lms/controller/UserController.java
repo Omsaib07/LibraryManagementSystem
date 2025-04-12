@@ -1,91 +1,79 @@
 package com.lms.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import com.lms.model.Loan;
 import com.lms.model.User;
-import com.lms.service.LoanService;
 import com.lms.service.UserService;
 
 import jakarta.servlet.http.HttpSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Controller
 @RequestMapping("/users")
 public class UserController {
 
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+
     @Autowired
     private UserService userService;
 
-    // Show all users
-    @GetMapping
-    public String showUsers(Model model) {
-        List<User> users = userService.getAllUsers();
-        model.addAttribute("users", users);
-        return "users";  // Render users.jsp
-    }
-
-    // Show the user creation form
-    @GetMapping("/new")
-    public String showUserForm(Model model) {
-        model.addAttribute("user", new User());
-        return "user_form";  // Renders user_form.jsp
-    }
-    // Show logged-in user's profile
-@GetMapping("/profile")
-public String showProfile(Model model, HttpSession session) {
-    User user = (User) session.getAttribute("loggedInUser");
-    if (user == null) {
-        return "redirect:/auth/"; // Redirect to login if not logged in
-    }
-    model.addAttribute("user", user);
-    return "my-profile"; // This should match my-profile.jsp
-}
-@Autowired
-private LoanService loanService; // Add this line
-// Show logged-in user's loans
-@GetMapping("/my-loans")
-public String showUserLoans(Model model, HttpSession session) {
-    User user = (User) session.getAttribute("loggedInUser");
-    if (user == null) {
-        return "redirect:/auth/"; // Redirect to login if not logged in
-    }
-
-    List<Loan> loans = loanService.getLoansByUserId(user.getId());
-    model.addAttribute("loans", loans);
-    return "my-loans"; // This should match my-loans.jsp
-}
-    // Save a user
-    @PostMapping("/save")
-    public String saveUser(@ModelAttribute User user) {
-        userService.saveUser(user);
-        return "redirect:/users";
-    }
-
-    // Show edit form
-    @GetMapping("/edit/{id}")
-    public String showEditForm(@PathVariable Long id, Model model) {
-        User user = userService.getUserById(id);
+    // ✅ Show logged-in user's profile
+    @GetMapping("/profile")
+    public String showProfile(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("loggedInUser");
+        if (user == null) {
+            return "redirect:/auth/login"; 
+        }
         model.addAttribute("user", user);
-        return "user_form";  // Reuse user_form.jsp for editing
+        return "profile"; // Ensure profile.jsp exists
     }
 
-    // Update user
+    // ✅ Show edit profile page
+    @GetMapping("/edit/{id}")
+    public String showEditProfile(@PathVariable Long id, Model model, HttpSession session) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+
+        if (loggedInUser == null || !loggedInUser.getId().equals(id)) {
+            return "redirect:/users/profile"; 
+        }
+
+        User user = userService.getUserById(id);
+        if (user == null) {
+            return "redirect:/users/profile";
+        }
+
+        model.addAttribute("user", user);
+        return "edit-profile"; // Ensure edit-profile.jsp exists
+    }
+
+    // ✅ Handle profile update
     @PostMapping("/update/{id}")
-    public String updateUser(@PathVariable Long id, @ModelAttribute User user) {
-        user.setId(id);
-        userService.saveUser(user);
-        return "redirect:/users";
+    public String updateProfile(@PathVariable Long id, @ModelAttribute User user, HttpSession session) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+
+        if (loggedInUser == null || !loggedInUser.getId().equals(id)) {
+            return "redirect:/users/profile"; 
+        }
+
+        try {
+            user.setId(id);
+            userService.saveUser(user);
+            session.setAttribute("loggedInUser", user);
+            return "redirect:/users/profile";
+        } catch (Exception e) {
+            logger.error("Error updating profile for user ID {}: {}", id, e.getMessage());
+            return "redirect:/users/edit/" + id;
+        }
     }
 
-    // Delete a user
-    @GetMapping("/delete/{id}")
-    public String deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
-        return "redirect:/users";
+    // ✅ Logout functionality
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate(); 
+        return "redirect:/auth/login"; 
     }
 }

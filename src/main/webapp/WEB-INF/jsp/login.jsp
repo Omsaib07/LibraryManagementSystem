@@ -72,12 +72,21 @@
             </div>
             <button type="submit" class="btn btn-success btn-login">Login</button>
         </form>
+        
 
         <!-- Additional Links -->
         <div class="text-center mt-3">
             <p><a href="#" class="text-danger">Forgot Password?</a></p>
         </div>
+        <!-- signup_page -->
+    <div class="text-center mt-3">
+        <p><a href="<c:url value='/signup' />" class="text-primary">Create an Account</a></p>
+
     </div>
+    </div>
+
+    
+    
 
     <!-- Bootstrap JS (Optional) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
