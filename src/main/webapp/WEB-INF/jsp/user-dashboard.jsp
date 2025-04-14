@@ -89,6 +89,7 @@
                 </a>
             </div>
 
+<<<<<<< HEAD
             <!-- Fines (Only visible if user has fines) -->
             <c:if test="${sessionScope.hasFines}">
                 <div class="col">
@@ -100,6 +101,17 @@
                                 <div class="d-grid">
                                     <button class="btn btn-outline-primary">Pay Fines</button>
                                 </div>
+=======
+            <!-- Fines -->
+            <div class="col">
+                <a href="/my-fines" class="card-link">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">My Fines</h5>
+                            <p class="card-text">Check and pay your outstanding fines.</p>
+                            <div class="d-grid">
+                                <button class="btn btn-outline-primary">Pay Fines</button>
+>>>>>>> my-fines
                             </div>
                         </div>
                     </a>

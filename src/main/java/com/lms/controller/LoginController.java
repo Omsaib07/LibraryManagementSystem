@@ -41,6 +41,7 @@ public class LoginController {
 
         session.setAttribute("loggedInUser", user);
         session.setAttribute("role", user.getRole().toString());
+        session.setAttribute("loggedInUserId", user.getId());
 
         // Debugging logs (check server logs)
         System.out.println("User logged in: " + user.getUsername());

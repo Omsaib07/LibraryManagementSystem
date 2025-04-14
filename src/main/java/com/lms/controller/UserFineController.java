@@ -12,7 +12,7 @@ import com.lms.service.UserFineService;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping("/user/fines")
+@RequestMapping("/my-fines")
 public class UserFineController {
 
     @Autowired
