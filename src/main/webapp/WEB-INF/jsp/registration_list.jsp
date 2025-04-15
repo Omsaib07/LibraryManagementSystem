@@ -8,7 +8,14 @@
 <body class="container mt-4">
     <!-- Navbar -->
     <h1 class="text-center">All Event Registrations</h1>
-    <jsp:include page="admin_navbar.jsp" />
+    <c:choose>
+        <c:when test="${sessionScope.loggedInUser.role == 'ADMIN'}">
+            <jsp:include page="admin_navbar.jsp" />
+        </c:when>
+        <c:otherwise>
+            <jsp:include page="user_navbar.jsp" />
+        </c:otherwise>
+    </c:choose>
 
     <!-- Registration List -->
     <table class="table table-bordered">

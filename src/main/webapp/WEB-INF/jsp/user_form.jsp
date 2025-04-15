@@ -29,9 +29,17 @@
     <div class="row justify-content-center">
         <div class="col-md-8 col-lg-6">
             <div class="card card-custom bg-white">
-                <h3 class="mb-4 text-center">Add/Edit User</h3>
+                <h3 class="mb-4 text-center">Edit Your Profile</h3>
 
-                <form action="/users/save" method="post">
+                <!-- Use the correct form action based on user role -->
+                <c:choose>
+                    <c:when test="${sessionScope.loggedInUser.role == 'ADMIN'}">
+                        <form action="/users/save" method="post">
+                    </c:when>
+                    <c:otherwise>
+                        <form action="/users/update/${user.id}" method="post">
+                    </c:otherwise>
+                </c:choose>
                     <input type="hidden" name="id" value="${user.id}" />
 
                     <div class="mb-3">
@@ -59,22 +67,38 @@
                         <input type="password" name="password" id="password" class="form-control" value="${user.password}" required>
                     </div>
 
-                    <div class="mb-4">
-                        <label for="role" class="form-label">Role</label>
-                        <select name="role" id="role" class="form-select" required>
-                            <option value="USER" ${user.role == 'USER' ? 'selected' : ''}>User</option>
-                            <option value="ADMIN" ${user.role == 'ADMIN' ? 'selected' : ''}>Admin</option>
-                        </select>
-                    </div>
+                    <!-- Only Admins can change role -->
+                    <c:if test="${sessionScope.loggedInUser.role == 'ADMIN'}">
+                        <div class="mb-4">
+                            <label for="role" class="form-label">Role</label>
+                            <select name="role" id="role" class="form-select" required>
+                                <option value="USER" ${user.role == 'USER' ? 'selected' : ''}>User</option>
+                                <option value="ADMIN" ${user.role == 'ADMIN' ? 'selected' : ''}>Admin</option>
+                            </select>
+                        </div>
+                    </c:if>
+
+                    <!-- Send existing role as hidden field if not admin -->
+                    <c:if test="${sessionScope.loggedInUser.role != 'ADMIN'}">
+                        <input type="hidden" name="role" value="${user.role}" />
+                    </c:if>
 
                     <div class="btn-group-custom">
-                        <a href="/users" class="btn btn-outline-secondary">Cancel</a>
-                        <button type="submit" class="btn btn-primary">Save User</button>
+                        <c:choose>
+                            <c:when test="${sessionScope.loggedInUser.role == 'ADMIN'}">
+                                <a href="/users" class="btn btn-outline-secondary">Cancel</a>
+                            </c:when>
+                            <c:otherwise>
+                                <a href="/users/profile" class="btn btn-outline-secondary">Cancel</a>
+                            </c:otherwise>
+                        </c:choose>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+    
     <footer class="mt-5 pt-5 text-center text-muted">
         <p>&copy; 2025 Library Management System</p>
     </footer>

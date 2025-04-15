@@ -17,25 +17,16 @@
     </style>
 </head>
 <body class="container py-4">
-
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Library Management System</a>
-            <div class="collapse navbar-collapse justify-content-end">
-                <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link" href="/user-dashboard">Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/users/profile">Profile</a></li>
-                    <li class="nav-item"><a class="nav-link btn btn-danger text-white" href="/users/logout">Logout</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
     <header class="mb-4 text-center">
         <h2>Your Profile</h2>
     </header>
 
+
+    <!-- Navigation -->
+    <jsp:include page="user_navbar.jsp" />
+    
+
+   
     <main>
         <c:if test="${sessionScope.loggedInUser == null}">
             <div class="alert alert-danger text-center">You must be logged in to view this page.</div>

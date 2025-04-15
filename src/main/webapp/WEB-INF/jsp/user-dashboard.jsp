@@ -26,7 +26,7 @@
 <body class="container py-4">
     <header class="mb-5">
         <h1 class="text-center">Library Management System</h1>
-        <p class="text-center text-muted">Welcome, <c:out value="${sessionScope.loggedInUser}" />!</p>
+        <p class="text-center text-muted">Welcome to the Library Management System Portal</p>
         
         <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
             <div class="container-fluid">
@@ -35,8 +35,17 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
+                    
                     <div class="d-flex">
-                        <a href="/auth/logout" class="btn btn-danger">Logout</a>
+                        <c:choose>
+                            <c:when test="${sessionScope.loggedInUser != null}">
+                                
+                                <a href="/auth/logout" class="btn btn-danger">Logout</a>
+                            </c:when>
+                            <c:otherwise>
+                                <a href="/auth/" class="btn btn-primary">Login</a>
+                            </c:otherwise>
+                        </c:choose>
                     </div>
                 </div>
             </div>
@@ -73,10 +82,10 @@
                     </div>
                 </a>
             </div>
-
+             
             <!-- Borrowed Books -->
             <div class="col">
-                <a href="/my-loans" class="card-link">
+                <a href="/loans" class="card-link">
                     <div class="card h-100">
                         <div class="card-body text-center">
                             <h5 class="card-title">My Loans</h5>
@@ -89,10 +98,51 @@
                 </a>
             </div>
 
+            <div class="col">
+                <a href="/fines" class="card-link">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">My Fines</h5>
+                            <p class="card-text">Check your Fines</p>
+                            <div class="d-grid">
+                                <button class="btn btn-outline-primary">View Fines</button>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col">
+                <a href="/events" class="card-link">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Events</h5>
+                            <p class="card-text">Explore library events and programs</p>
+                            <div class="d-grid">
+                                <button class="btn btn-outline-primary">View Events</button>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="/registration_list" class="card-link">
+                    
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Registrations</h5>
+                            <p class="card-text">View registered users or event sign-ups</p>
+                            <div class="d-grid">
+                                <button class="btn btn-outline-primary">View Registrations</button>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
             <!-- Fines (Only visible if user has fines) -->
             <c:if test="${sessionScope.hasFines}">
                 <div class="col">
-                    <a href="/my-fines" class="card-link">
+                    <a href="/fines" class="card-link">
                         <div class="card h-100">
                             <div class="card-body text-center">
                                 <h5 class="card-title">My Fines</h5>

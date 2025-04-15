@@ -29,27 +29,30 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String loginUser(@RequestParam String username,
-                            @RequestParam String password,
-                            Model model,
-                            HttpSession session) {
+public String loginUser(@RequestParam String username,
+                        @RequestParam String password,
+                        Model model,
+                        HttpSession session) {
 
-        User user = loginService.authenticate(username, password);
-        if (user == null) {
-            return "redirect:/auth/?error=true"; // Redirect with error message
-        }
-
-        session.setAttribute("loggedInUser", user);
-        session.setAttribute("role", user.getRole().toString());
-
-        // Debugging logs (check server logs)
-        System.out.println("User logged in: " + user.getUsername());
-        System.out.println("Role stored in session: " + session.getAttribute("role"));
-
-        return user.getRole().toString().equalsIgnoreCase("ADMIN") 
-               ? "redirect:/admin-dashboard" 
-               : "redirect:/user-dashboard";
+    User user = loginService.authenticate(username, password);
+    if (user == null) {
+        return "redirect:/auth/?error=true"; // Redirect with error message
     }
+
+    // Set user and role in session
+    session.setAttribute("loggedInUser", user);
+    session.setAttribute("role", user.getRole().toString());
+    session.setAttribute("userId", user.getId()); // Add userId to session
+
+    // Debugging logs (check server logs)
+    System.out.println("User logged in: " + user.getUsername());
+    System.out.println("Role stored in session: " + session.getAttribute("role"));
+    System.out.println("User ID stored in session: " + session.getAttribute("userId"));
+
+    return user.getRole().toString().equalsIgnoreCase("ADMIN") 
+           ? "redirect:/admin-dashboard" 
+           : "redirect:/user-dashboard";
+}
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {

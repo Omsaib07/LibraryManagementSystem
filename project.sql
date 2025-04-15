@@ -70,7 +70,7 @@ alter table loans drop column category_id;
 
 INSERT INTO loans (user_id, book_id, borrow_date, return_date) 
 VALUES -- User 4 borrowed book 9 and returned it
-    (1, 12, '2025-03-01', NULL);        -- User 5 borrowed book 10 and has not returned it yet
+    (1, 12, '2025-03-02','2025-04-02' );        -- User 5 borrowed book 10 and has not returned it yet
     
 select * from lms_table;
 ALTER TABLE lms_table 
@@ -141,3 +141,5 @@ DROP FOREIGN KEY FK6akauhvfwgy751ff3mk30fk8h;
 
 ALTER TABLE registrations
 ADD CONSTRAINT fk_event_id FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE;
+
+ALTER TABLE lms_table ADD COLUMN available_copies INT DEFAULT 10;

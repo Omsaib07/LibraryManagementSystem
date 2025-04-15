@@ -20,21 +20,24 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity(name = "lms_table") // Ensure this matches your DB table name
 public class Book {
-    @Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)  // ✅ Use MySQL's auto-increment
-private long id;
 
-    @Column(name="book_name")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @Column(name = "book_name")
     private String book_name;
 
-    @Column(name="author")
+    @Column(name = "author")
     private String author;
 
-    @Column(name="purchase_date")
+    @Column(name = "purchase_date")
     @Temporal(TemporalType.DATE)
     private Date purchase_date;
 
-    // ✅ Add category field
-    @Column(name="category")
+    @Column(name = "category")
     private String category;
+
+    @Column(name = "available_copies")
+    private int available_copies; // ✅ Add this field
 }

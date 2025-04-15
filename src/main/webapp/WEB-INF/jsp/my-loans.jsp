@@ -1,67 +1,87 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>My Loans</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <meta charset="UTF-8">
+    <title>My Loans - Library Management System</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
-<body class="container py-4">
-    <header class="mb-4 text-center">
-        <h2>My Loans</h2>
-    </header>
-
-    <main>
-        <c:if test="${sessionScope.loggedInUser == null}">
-            <div class="alert alert-danger text-center">You must be logged in to view this page.</div>
+<body>
+    <div class="container mt-4">
+        <h2>My Borrowed Books</h2>
+        
+        <c:if test="${not empty success}">
+            <div class="alert alert-success">${success}</div>
         </c:if>
-
-        <c:if test="${sessionScope.loggedInUser != null}">
-            <c:choose>
-                <c:when test="${empty loans}">
-                    <div class="alert alert-info text-center">You have not borrowed any books.</div>
-                </c:when>
-                <c:otherwise>
-                    <table class="table table-bordered">
-                        <thead class="table-light">
-                            <tr>
-                                <th>#</th>
-                                <th>Book Title</th>
-                                <th>Author</th>
-                                <th>Issued Date</th>
-                                <th>Due Date</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <c:forEach var="loan" items="${loans}" varStatus="status">
-                                <tr>
-                                    <td>${status.index + 1}</td>
-                                    <td>${loan.bookTitle}</td>
-                                    <td>${loan.author}</td>
-                                    <td>${loan.issueDate}</td>
-                                    <td>${loan.dueDate}</td>
-                                    <td>
-                                        <c:choose>
-                                            <c:when test="${loan.returned}">
-                                                <span class="text-success">Returned</span>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <span class="text-danger">Pending</span>
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </td>
-                                </tr>
-                            </c:forEach>
-                        </tbody>
-                    </table>
-                </c:otherwise>
-            </c:choose>
+        
+        <c:if test="${not empty error}">
+            <div class="alert alert-danger">${error}</div>
         </c:if>
-    </main>
-
-    <footer class="mt-5 pt-3 text-center text-muted">
-        <p>&copy; 2025 Library Management System</p>
-    </footer>
+        
+        <div class="row mb-3">
+            <div class="col">
+                <a href="${pageContext.request.contextPath}/userbooks/available" class="btn btn-primary">Borrow Books</a>
+                <a href="${pageContext.request.contextPath}/" class="btn btn-secondary">Home</a>
+            </div>
+        </div>
+        
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Book</th>
+                    <th>Author</th>
+                    <th>Borrow Date</th>
+                    <th>Due Date</th>
+                    <th>Days Left</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <c:forEach items="${userBooks}" var="userBook">
+                    <c:set var="book" value="${requestScope['book_'.concat(userBook.id)]}" />
+                    <c:set var="daysLeft" value="${userBook.returnDate.toEpochDay() - java.time.LocalDate.now().toEpochDay()}" />
+                    
+                    <tr>
+                        <td>${book.bookName}</td>
+                        <td>${book.author}</td>
+                        <td>${userBook.borrowDate}</td>
+                        <td>${userBook.returnDate}</td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${daysLeft < 0}">
+                                    <span class="text-danger font-weight-bold">Overdue by ${-daysLeft} day(s)</span>
+                                </c:when>
+                                <c:when test="${daysLeft == 0}">
+                                    <span class="text-warning font-weight-bold">Due today</span>
+                                </c:when>
+                                <c:when test="${daysLeft <= 2}">
+                                    <span class="text-warning">${daysLeft} day(s)</span>
+                                </c:when>
+                                <c:otherwise>
+                                    <span class="text-success">${daysLeft} days</span>
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
+                        <td>
+                            <form action="${pageContext.request.contextPath}/userbooks/return/${userBook.id}" method="post" style="display: inline;">
+                                <button type="submit" class="btn btn-primary btn-sm">Return Book</button>
+                            </form>
+                        </td>
+                    </tr>
+                </c:forEach>
+                
+                <c:if test="${empty userBooks}">
+                    <tr>
+                        <td colspan="6" class="text-center">You don't have any borrowed books.</td>
+                    </tr>
+                </c:if>
+            </tbody>
+        </table>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

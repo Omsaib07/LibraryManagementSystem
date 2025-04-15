@@ -13,12 +13,28 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Library Management System</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto">
+                    <c:choose>
+                        <c:when test="${sessionScope.loggedInUser.role == 'ADMIN'}">
+                            <li class="nav-item"><a class="nav-link" href="/admin/dashboard">Dashboard</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/users/manage">Manage Users</a></li>
+                        </c:when>
+                        <c:otherwise>
+                            <li class="nav-item"><a class="nav-link" href="/user/dashboard">Dashboard</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/books">Browse Books</a></li>
+                        </c:otherwise>
+                    </c:choose>
+                    <li class="nav-item"><a class="nav-link" href="/users/profile">Profile</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
+                </ul>
+            </div>
         </div>
     </nav>
 
     <!-- Header -->
     <header class="mb-4 text-center">
-        <h2>Edit Your Profile</h2>
+        <h2>Edit Your Profile2</h2>
     </header>
 
     <!-- Main Content -->
@@ -66,14 +82,21 @@
                                value="${sessionScope.loggedInUser.password}" required>
                     </div>
 
-                    <!-- Role Selection -->
-                    <div class="mb-3">
-                        <label for="role" class="form-label">Role</label>
-                        <select id="role" name="role" class="form-control" required>
-                            <option value="USER" ${sessionScope.loggedInUser.role == 'USER' ? 'selected' : ''}>User</option>
-                            
-                        </select>
-                    </div>
+                    <!-- Role Selection (Only visible/editable for Admins) -->
+                    <c:if test="${sessionScope.loggedInUser.role == 'ADMIN'}">
+                        <div class="mb-3">
+                            <label for="role" class="form-label">Role</label>
+                            <select id="role" name="role" class="form-control" required>
+                                <option value="USER" ${sessionScope.loggedInUser.role == 'USER' ? 'selected' : ''}>User</option>
+                                <option value="ADMIN" ${sessionScope.loggedInUser.role == 'ADMIN' ? 'selected' : ''}>Admin</option>
+                            </select>
+                        </div>
+                    </c:if>
+
+                    <!-- Hidden Role Field for Users (to preserve current value) -->
+                    <c:if test="${sessionScope.loggedInUser.role != 'ADMIN'}">
+                        <input type="hidden" name="role" value="${sessionScope.loggedInUser.role}">
+                    </c:if>
 
                     <!-- Buttons -->
                     <div class="text-center mt-3">
