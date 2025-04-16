@@ -76,7 +76,7 @@
                             </td>
                             <td>
                                 <c:if test="${!fine.paid}">
-                                    <form action="/loans/payFine" method="post" style="display:inline;">
+                                    <form action="/fines/pay" method="post" style="display:inline;">
                                         <input type="hidden" name="fineId" value="${fine.id}" />
                                         <button type="submit" class="btn btn-sm btn-primary">Pay Fine</button>
                                     </form>

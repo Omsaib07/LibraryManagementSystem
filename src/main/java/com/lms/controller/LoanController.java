@@ -114,4 +114,48 @@ public class LoanController {
             return "redirect:/loans?error=ReturnFailed";
         }
     }
+    @PostMapping("/renew")
+public String renewBook(@RequestParam("loanId") Long loanId, HttpSession session) {
+    // Get logged-in user for security check
+    User loggedInUser = (User) session.getAttribute("loggedInUser");
+    
+    if (loggedInUser == null) {
+        log.error("❌ User not logged in when attempting to renew book");
+        return "redirect:/login";
+    }
+    
+    try {
+        // Find the loan
+        Loan loan = loanService.getLoanById(loanId);
+        
+        if (loan == null) {
+            log.error("❌ Loan not found with ID: {}", loanId);
+            return "redirect:/loans?error=LoanNotFound";
+        }
+        
+        // Security check - ensure this loan belongs to the logged-in user
+        String role = (String) session.getAttribute("role");
+        if (!"ADMIN".equalsIgnoreCase(role) && !loan.getUser().getId().equals(loggedInUser.getId())) {
+            log.error("❌ User {} attempted to renew a book belonging to another user", loggedInUser.getId());
+            return "redirect:/loans?error=UnauthorizedRenewal";
+        }
+        
+        // Check if book is already returned
+        if (loan.getReturnDate() != null) {
+            return "redirect:/loans?error=CannotRenewReturnedBook";
+        }
+        
+        // Call service to renew the book (creates new loan entry)
+        Loan newLoan = loanService.renewLoan(loanId);
+        if (newLoan != null) {
+            log.info("✅ Book renewed successfully, new loan ID: {}", newLoan.getId());
+            return "redirect:/loans?renew=success";
+        } else {
+            return "redirect:/loans?error=RenewalFailed";
+        }
+    } catch (Exception e) {
+        log.error("❌ Error renewing book: {}", e.getMessage(), e);
+        return "redirect:/loans?error=RenewalFailed";
+    }
+}
 }

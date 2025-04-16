@@ -25,10 +25,40 @@ public class FineService {
     private static final int GRACE_PERIOD_DAYS = 14;
     
     @Autowired
-    private FineRepository fineRepository;
+private FineRepository fineRepository;
+
+public List<Fine> getAllFines() {
+    log.info("⭐ Retrieving all fines from the system");
+    try {
+        // Use the improved repository method for eager loading
+        List<Fine> fines = fineRepository.findAllWithLoans();
+        log.info("⭐ Retrieved {} fines successfully", fines.size());
+        
+        // Add debug logging to see what's in the list
+        if (fines.isEmpty()) {
+            log.warn("⭐ No fines found in the system!");
+        } else {
+            log.info("⭐ First few fines:");
+            for (int i = 0; i < Math.min(fines.size(), 3); i++) {
+                Fine fine = fines.get(i);
+                log.info("⭐ Fine ID: {}, Amount: ${}, Paid: {}, LoanID: {}", 
+                    fine.getId(), fine.getFineAmount(), fine.getPaid(), 
+                    fine.getLoan() != null ? fine.getLoan().getId() : "null");
+            }
+        }
+        
+        return fines;
+    } catch (Exception e) {
+        log.error("⭐ Error retrieving all fines: {}", e.getMessage(), e);
+        return List.of(); // Return empty list instead of null
+    }
+}
+    
     
     // Calculate and save fine for an overdue book
     public Fine calculateAndSaveFine(Loan loan) {
+        log.info("⭐⭐⭐ FINE CALCULATION STARTED for loan ID: {}, borrow date: {}, return date: {}", 
+            loan.getId(), loan.getBorrowDate(), loan.getReturnDate());
         log.info("⭐ Fine calculation started for loan ID: {}", loan.getId());
         
         try {
@@ -126,20 +156,25 @@ public class FineService {
     }
     
     // Helper method to convert Date to LocalDate
-    private LocalDate convertToLocalDate(Date date) {
-        try {
-            if (date == null) {
-                log.error("⭐ Cannot convert null date to LocalDate");
-                throw new IllegalArgumentException("Date cannot be null");
-            }
-            LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            log.debug("⭐ Converted Date {} to LocalDate {}", date, localDate);
-            return localDate;
-        } catch (Exception e) {
-            log.error("⭐ Error converting date: {}", e.getMessage(), e);
-            throw e; // Re-throw to be caught by the caller
+    // Helper method to convert Date to LocalDate
+private LocalDate convertToLocalDate(Date date) {
+    try {
+        if (date == null) {
+            log.error("⭐ Cannot convert null date to LocalDate");
+            throw new IllegalArgumentException("Date cannot be null");
         }
+        
+        // Handle java.sql.Date differently than java.util.Date
+        if (date instanceof java.sql.Date) {
+            return ((java.sql.Date) date).toLocalDate();
+        } else {
+            return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        }
+    } catch (Exception e) {
+        log.error("⭐ Error converting date: {}", e.getMessage(), e);
+        throw e; // Re-throw to be caught by the caller
     }
+}
     
     // Test method to verify the repository and database connection
     public void testFineRepository() {

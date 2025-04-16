@@ -80,7 +80,7 @@
                         <a class="nav-link" href="/loans">Loans</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/fines">Fines</a>
+                        <a class="nav-link" href="/admin/fines">Fines</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/categories">Categories</a>

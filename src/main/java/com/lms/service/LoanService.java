@@ -43,6 +43,7 @@ public class LoanService {
     }
 
     // ✅ Delete a loan
+    // ✅ Delete a loan only if no fine exists
     public void deleteLoan(Long id) {
         loanRepository.deleteById(id);
     }
@@ -66,7 +67,8 @@ public class LoanService {
     loan.setReturnDate(new Date());
     loan = loanRepository.save(loan);
     log.info("Return date set to: {} for loan ID: {}", loan.getReturnDate(), loanId);
-    
+    log.info("Calling fineService.calculateAndSaveFine for loan ID: {}", loanId);
+log.info("Loan borrow date: {}, return date: {}", loan.getBorrowDate(), loan.getReturnDate());
     // Calculate and save fine if overdue
     try {
         Fine fine = fineService.calculateAndSaveFine(loan);
@@ -82,4 +84,24 @@ public class LoanService {
     
     return loan;
 }
+public Loan renewLoan(Long loanId) {
+    Loan existingLoan = getLoanById(loanId);
+    if (existingLoan != null && existingLoan.getReturnDate() == null) {
+        // First mark the existing loan as returned today
+        existingLoan.setReturnDate(new Date());
+        loanRepository.save(existingLoan);
+        
+        // Create a new loan entry
+        Loan newLoan = new Loan();
+        newLoan.setUser(existingLoan.getUser());
+        newLoan.setBook(existingLoan.getBook());
+        newLoan.setBorrowDate(new Date());  // Set today as borrow date
+        newLoan.setReturnDate(null);        // Not returned yet
+        newLoan.setCategoryId(existingLoan.getCategoryId());
+        
+        return loanRepository.save(newLoan);
+    }
+    return null;
 }
+}
+

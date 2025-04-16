@@ -5,20 +5,24 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.lms.model.Fine;
 
 @Repository
+
 public interface FineRepository extends JpaRepository<Fine, Long> {
+    // Make sure this method exists and is properly implemented
+    @Query("SELECT f FROM Fine f JOIN FETCH f.loan")
+    List<Fine> findAllWithLoans();
     
-    @Query("SELECT f FROM Fine f WHERE f.loan.user.id = :userId")
-    List<Fine> findByUserId(@Param("userId") Long userId);
+    Fine findByLoanId(Long loanId);
     
-    @Query("SELECT f FROM Fine f WHERE f.loan.id = :loanId")
-    Fine findByLoanId(@Param("loanId") Long loanId);
+    @Query("SELECT f FROM Fine f JOIN f.loan l WHERE l.user.id = :userId")
+    List<Fine> findByUserId(Long userId);
     
-    @Query("SELECT SUM(f.fineAmount) FROM Fine f WHERE f.loan.user.id = :userId AND f.paid = false")
-    BigDecimal getTotalUnpaidFinesByUserId(@Param("userId") Long userId);
+    @Query("SELECT SUM(f.fineAmount) FROM Fine f JOIN f.loan l WHERE l.user.id = :userId AND f.paid = false")
+    BigDecimal getTotalUnpaidFinesByUserId(Long userId);
+
+    
 }

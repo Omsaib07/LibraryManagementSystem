@@ -36,6 +36,13 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     </c:if>
+    <!-- Add success message for renewals -->
+    <c:if test="${param.renew == 'success'}">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            Book renewed successfully! A new loan has been created.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </c:if>
 
     <!-- User Fines Summary (only for regular users) -->
     <c:if test="${sessionScope.role == 'USER' && totalUnpaidFines.compareTo(java.math.BigDecimal.ZERO) > 0}">
@@ -82,6 +89,12 @@
                                     <form action="/loans/return" method="post" style="display:inline;">
                                         <input type="hidden" name="loanId" value="${loan.id}" />
                                         <button type="submit" class="btn btn-sm btn-success">Return Book</button>
+                                    </form>
+                                    
+                                    <!-- Add Renew Book button -->
+                                    <form action="/loans/renew" method="post" style="display:inline;">
+                                        <input type="hidden" name="loanId" value="${loan.id}" />
+                                        <button type="submit" class="btn btn-sm btn-primary ms-2">Renew Book</button>
                                     </form>
                                 </c:if>
                                 

@@ -170,7 +170,7 @@
                     </div>
                     
                     <div class="col">
-                        <a href="/fines" class="card-link">
+                        <a href="/admin/fines" class="card-link">
                             <div class="card h-100">
                                 <div class="card-body text-center">
                                     <h5 class="card-title">Fines</h5>
